@@ -8,7 +8,7 @@ pipeline {
     stages {
            stage('Clone') {
                steps {
-                   git git branch: 'main', credentialsId: 'github', 'https://github.com/Danishain/DevOps_project_2.git'
+                   git branch: 'main', credentialsId: 'github', 'https://github.com/Danishain/DevOps_project_2.git'
                }
            }
            stage('Build') {
