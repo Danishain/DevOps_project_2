@@ -9,7 +9,7 @@ pipeline {
 
            stage('Build') {
                steps {
-                   sh 'docker build -t webapp:$IMAGE_TAG .'
+                   sh 'docker build -t webapp .'
                }
            }
            stage('Run') {
