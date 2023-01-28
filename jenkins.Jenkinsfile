@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image  '352708296901.dkr.ecr.eu-north-1.amazonaws.com/danishain-jenkins-ex1:latest'
-            args  '--user root -v /var/run/docker.sock:/var/run/docker.sock'
-        }
-    }
+    agent any
 
     environment {
            REGISTRY_URL = "public.ecr.aws/r7m7o9d4"
