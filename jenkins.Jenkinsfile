@@ -6,14 +6,10 @@ pipeline {
         }
     }
     stages {
-           stage('Clone') {
-               steps {
-                   sh 'git clone https://github.com/Danishain/DevOps_project_2.git'
-               }
-           }
+
            stage('Build') {
                steps {
-                   sh 'docker build -t webapp .'
+                   sh 'docker build -t webapp:$IMAGE_TAG .'
                }
            }
            stage('Run') {
