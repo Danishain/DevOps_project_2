@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        any
-    }
+    agent any
 
     environment {
            REGISTRY_URL = "public.ecr.aws/r7m7o9d4"
