@@ -27,7 +27,7 @@ pipeline {
         stage('Run') {
             steps {
                 sh 'docker pull $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG'
-                sh 'docker run -p 8501:8501 $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG'
+                sh 'docker run -d -p 8501:8501 $REGISTRY_URL/$IMAGE_NAME:$IMAGE_TAG'
             }
         }
     }
