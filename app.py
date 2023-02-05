@@ -20,7 +20,7 @@ months = st.multiselect(
     'Select Months',
     [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], )
 
-all_options = st.checkbox("Select whole Year", 1)
+all_options = st.checkbox("Select whole Year", 0)
 if all_options:
     months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
@@ -32,6 +32,7 @@ df = pd.read_parquet(f"s3://schiff-trades-2021/{file}")
 
 # Create timestamp for date and time columns
 df['timestamp'] = df['date'] + pd.to_timedelta(df['time'])
+df['month'] = df['timestamp'].dt.month
 
 
 def Day_Night_Result_table(df, buy_morning=True, open_time=open_time, close_time=close_time,
@@ -64,20 +65,21 @@ def Day_Night_Result_table(df, buy_morning=True, open_time=open_time, close_time
     df_final['buy_sell'] = np.where(df_final.trade_type == 'buy', -df_final['p'], df_final['p'])
     # number_of_trades = df_final.shape[0]
     # result= df_final.groupby(['call','month'])['buy_sell'].sum().reset_index().rename(columns={'call': 'option_type'})
-    # result['option_type'] = result['option_type'].map({0.0: 'Put', 1.0: 'Call'})1
+    # result['option_type'] = result['option_type'].map({0.0: 'Put', 1.0: 'Call'})
 
     return (df_final)
 
 
-a = Day_Night_Result_table(df)
-
-
 def Output_Table(df):
-    df_final = Day_Night_Result_table(df)
-    number_of_trades = df_final.shape[0]
-    result = df_final.groupby(['call', 'month'])['buy_sell'].sum().reset_index().rename(columns={'call': 'option_type'})
+    df_final = Day_Night_Result_table(df).rename(columns={'call': 'option_type'})
+
+    result = df_final.groupby(['option_type', 'month'])['buy_sell'].agg(['sum', 'count']).reset_index()
+
     result['option_type'] = result['option_type'].map({0.0: 'Put', 1.0: 'Call'})
     result['month'] = result['month'].astype(int)
+    result['open_time'] = open_time
+    result['close_time'] = close_time
+    result['diff'] = delta
     return result
 
 
@@ -89,10 +91,6 @@ def Output_Table(df):
 
 
 st.title("Options Data")
-if st.button("Calculate Mean"):
+if st.button("TEST STRATEGY"):
     mean_result = Output_Table(df)
-    st.write("Mean:", mean_result)
-
-# if st.button("Calculate Sum"):
-#     sum_result = calculate_sum(df.head(200))
-#     st.write("Sum:", sum_result)
+    st.write("Result:", mean_result)
