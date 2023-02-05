@@ -64,7 +64,7 @@ def Day_Night_Result_table(df, buy_morning=True, open_time=open_time, close_time
     df_final['buy_sell'] = np.where(df_final.trade_type == 'buy', -df_final['p'], df_final['p'])
     # number_of_trades = df_final.shape[0]
     # result= df_final.groupby(['call','month'])['buy_sell'].sum().reset_index().rename(columns={'call': 'option_type'})
-    # result['option_type'] = result['option_type'].map({0.0: 'Put', 1.0: 'Call'})
+    # result['option_type'] = result['option_type'].map({0.0: 'Put', 1.0: 'Call'})1
 
     return (df_final)
 
